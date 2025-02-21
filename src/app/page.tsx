@@ -1,19 +1,14 @@
-import { api, HydrateClient } from "~/trpc/server";
+import { HydrateClient } from "~/trpc/server";
 import { AuthButtons } from "./_components/auth-buttons";
+import Posts from "./_components/posts";
 
 export default async function Home() {
-  const posts = await api.posts.getAll();
-
   return (
     <HydrateClient>
-      <main>
-        <AuthButtons />
-        <div>
-          {posts.map((post) => (
-            <div key={post.id}>
-              <p>{post.content}</p>
-            </div>
-          ))}
+      <main className="flex h-screen justify-center">
+        <div className="h-full w-full border-x border-slate-400 md:max-w-2xl">
+          <AuthButtons />
+          <Posts />
         </div>
       </main>
     </HydrateClient>
