@@ -1,9 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import { type RouterOutputs } from "~/trpc/react";
-import { api } from "~/trpc/server";
+import { type RouterOutputs, api } from "~/trpc/react";
+import { LoadingOverlay } from "./loading";
 
 dayjs.extend(relativeTime);
 
@@ -36,10 +38,12 @@ const PostView = (props: PostWithUser) => {
   );
 };
 
-const Posts = async () => {
-  const posts = await api.posts.getAll();
+const Feed = () => {
+  const { data: posts, isLoading } = api.posts.getAll.useQuery();
 
-  if (!posts) return <div> Loading...</div>;
+  if (isLoading) return <LoadingOverlay />;
+
+  if (!posts) return <div>Something went wrong</div>;
 
   return (
     <div className="flex flex-col">
@@ -50,4 +54,4 @@ const Posts = async () => {
   );
 };
 
-export default Posts;
+export default Feed;
