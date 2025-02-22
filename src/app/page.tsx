@@ -1,5 +1,4 @@
-import { AuthButtons } from "./_components/auth-buttons";
-
+import AuthButtons from "./_components/auth-buttons";
 import Feed from "./_components/posts";
 
 export default async function Home() {

@@ -3,7 +3,7 @@
 import { SignInButton, useUser } from "@clerk/nextjs";
 import CreatePostWizard from "./create-post-wizard";
 
-export function AuthButtons() {
+const AuthButtons = () => {
   const { isSignedIn, isLoaded: isUserLoaded } = useUser();
 
   if (!isUserLoaded) return <div />;
@@ -18,4 +18,6 @@ export function AuthButtons() {
       {!!isSignedIn && <CreatePostWizard />}
     </div>
   );
-}
+};
+
+export default AuthButtons;
