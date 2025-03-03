@@ -3,6 +3,7 @@ import { useUser } from "@clerk/nextjs";
 import { api } from "~/trpc/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { LoadingSpinner } from "./loading";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -47,7 +48,16 @@ const CreatePostWizard = () => {
         onChange={(e) => setInput(e.target.value)}
         disabled={isPosting}
       />
-      <button onClick={() => mutate({ content: input })}>Post</button>
+      {input !== "" && !isPosting && (
+        <button onClick={() => mutate({ content: input })} disabled={isPosting}>
+          Post
+        </button>
+      )}
+      {isPosting && (
+        <div className="flex items-center justify-center">
+          <LoadingSpinner size={20} />
+        </div>
+      )}
     </div>
   );
 };
