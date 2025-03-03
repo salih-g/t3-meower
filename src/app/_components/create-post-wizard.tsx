@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
 import { api } from "~/trpc/react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const CreatePostWizard = () => {
   const { user } = useUser();
@@ -11,7 +12,17 @@ const CreatePostWizard = () => {
   const { mutate, isPending: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
+      toast.success("Post created successfully");
       void ctx.posts.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errMessage = e.data?.zodError?.fieldErrors.content;
+      if (errMessage?.[0]) {
+        toast.error(errMessage[0]);
+        return;
+      } else {
+        toast.error("Failed to create post");
+      }
     },
   });
 
