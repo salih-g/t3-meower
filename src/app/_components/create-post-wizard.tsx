@@ -13,7 +13,6 @@ const CreatePostWizard = () => {
   const { mutate, isPending: isPosting } = api.posts.create.useMutation({
     onSuccess: () => {
       setInput("");
-      toast.success("Post created successfully");
       void ctx.posts.getAll.invalidate();
     },
     onError: (e) => {
@@ -46,6 +45,14 @@ const CreatePostWizard = () => {
         className="grow bg-transparent outline-none"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (input !== "") {
+              void mutate({ content: input });
+            }
+          }
+        }}
         disabled={isPosting}
       />
       {input !== "" && !isPosting && (
